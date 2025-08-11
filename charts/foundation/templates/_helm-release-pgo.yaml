@@ -1,0 +1,13 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pgo
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: helm/install
+      sourceRef:
+        kind: GitRepository
+        name: pgo-repo
+      interval: 10m

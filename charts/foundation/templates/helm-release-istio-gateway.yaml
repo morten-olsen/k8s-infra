@@ -1,0 +1,39 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-gateway
+spec:
+  interval: 1h
+  dependsOn:
+    - name: istio-base
+      namespace: "{{ .Release.Namespace }}"
+    - name: istiod
+      namespace: "{{ .Release.Namespace }}"
+  values:
+    service:
+      ports:
+        - name: status-port
+          port: 15021
+        - name: tls-istiod
+          port: 15012
+        - name: tls
+          port: 15443
+          nodePort: 31371
+          targetPort: 8280
+        - name: http2
+          port: 80
+          nodePort: 31381
+          targetPort: 8280
+        - name: https
+          port: 443
+          nodePort: 31391
+          targetPort: 8243
+  chart:
+    spec:
+      chart: gateway
+      sourceRef:
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: HelmRepository
+        name: istio-repo
+      reconcileStrategy: ChartVersion
+      version: 1.24.3

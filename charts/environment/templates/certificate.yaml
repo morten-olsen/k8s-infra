@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "{{ .Release.Name }}-tls"
+  namespace: {{ .Values.homelab.namespace }}
+spec:
+  secretName: "{{ .Release.Name }}-tls"
+  dnsNames:
+    - "*.{{ .Values.domain }}"
+  issuerRef:
+    name: {{ .Release.Namespace }}
+    kind: ClusterIssuer
+  privateKey:
+    rotationPolicy: Always

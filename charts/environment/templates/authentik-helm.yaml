@@ -1,0 +1,54 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: authentik
+      version: 2025.6.4
+      sourceRef:
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: HelmRepository
+        name: authentik-repo
+        namespace: "{{ .Values.homelab.namespace }}"
+  values:
+    global:
+      envFrom:
+        - secretRef:
+            name: authentik-secret-key
+    authentik:
+      error_reporting:
+        enabled: false
+      postgresql:
+        host: postgres.{{ .Release.Namespace }}.svc.cluster.local
+        name: "{{ .Release.Namespace }}_authentik"
+        user: file:///postgres-creds/user
+        password: file:///postgres-creds/password
+      redis:
+        host: redis.{{ .Release.Namespace }}.svc.cluster.local
+    server:
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: authentik-connection
+        - name: authentik-secret-key
+          secret:
+            secretName: authentik-secret-key
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+        - name: authentik-secret-key
+          mountPath: /authentik-secret-key
+          readOnly: true
+    worker:
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: postgres-secret
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true

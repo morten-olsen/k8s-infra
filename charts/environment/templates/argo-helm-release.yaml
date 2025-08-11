@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: argo
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: argo-cd
+      sourceRef:
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: HelmRepository
+        name: argo-repo
+      reconcileStrategy: ChartVersion
+  values:
+    server:
+      extraArgs:
+        - --insecure
+    configs:
+      cm:
+        server.insecure: "true"

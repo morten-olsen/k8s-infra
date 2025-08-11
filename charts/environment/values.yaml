@@ -1,0 +1,17 @@
+domain: dev.olsen.cloud
+homelab:
+  namespace: homelab
+clusterIssuer:
+  server: https://acme-v02.api.letsencrypt.org/directory
+  email: "alice@olsen.cloud"
+  cloudflare:
+    secretName: cloudflare-api-token
+    secretKey: api-token
+authentik:
+  image:
+    repository: ghcr.io/goauthentik/server
+    tag: 2025.6.4
+redis:
+  image:
+    repository: redis
+    tag: latest

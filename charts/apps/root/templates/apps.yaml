@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: "https://github.com/morten-olsen/k8s-infra.git"
+        revision: HEAD
+        directories:
+          - path: charts/apps/charts/*
+          - path: charts/apps/charts/*.disabled
+            exclude: true
+  template:
+    metadata:
+      name: "{{`{{path.basename}}`}}"
+      namespace: argocd
+    spec:
+      project: "{{ .Release.Namespace }}"
+      ignoreDifferences:
+        - group: "*"
+          kind: "*"
+          jqPathExpressions:
+            - ".webhooks[]?.failurePolicy"
+      source:
+        repoURL: "{{ .Values.global.repo }}"
+        targetRevision: "{{ .Values.global.revision }}"
+        path: "{{`{{path}}`}}"
+        helm:
+          values: { { .Values | toJson | quote } }
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: "{{ .Release.Namespace }}-{{`{{path.basename}}`}}" # Deploys app into a namespace with its own name
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - SkipDryRunOnMissingResource=true

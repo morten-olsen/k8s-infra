@@ -1,0 +1,9 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: pgo-repo
+spec:
+  interval: 10m
+  url: https://github.com/mortenolsenzn/postgres-operator
+  ref:
+    branch: main

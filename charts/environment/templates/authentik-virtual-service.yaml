@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: authentik
+spec:
+  hosts:
+    - "authentik.{{ .Values.domain }}"
+  gateways:
+    - gateway
+  http:
+    - route:
+        - destination:
+            host: authentik-server.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: 80

@@ -1,0 +1,6 @@
+apiVersion: homelab.mortenolsen.pro/v1
+kind: PostgresDatabase
+metadata:
+  name: authentik
+spec:
+  secretRef: production/postgres-secret
