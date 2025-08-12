@@ -1,0 +1,9 @@
+apiVersion: homelab.mortenolsen.pro/v1
+kind: AuthentikClient
+metadata:
+  name: authentik-client
+spec:
+  secretRef: authentik-authentik-server
+  redirectUris:
+    - url: http://localhost
+      matchingMode: strict

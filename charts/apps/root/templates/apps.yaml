@@ -28,7 +28,7 @@ spec:
         targetRevision: "{{ .Values.global.revision }}"
         path: "{{`{{path}}`}}"
         helm:
-          values: { { .Values | toJson | quote } }
+          values: { { .Values.chartValues | toJson | quote } }
       destination:
         server: "https://kubernetes.default.svc"
         namespace: "{{ .Release.Namespace }}-{{`{{path.basename}}`}}" # Deploys app into a namespace with its own name

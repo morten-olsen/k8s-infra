@@ -4,6 +4,9 @@ metadata:
   name: argo
 spec:
   interval: 1h
+  targetNamespace: argocd
+  install:
+    createNamespace: true
   chart:
     spec:
       chart: argo-cd
@@ -13,9 +16,9 @@ spec:
         name: argo-repo
       reconcileStrategy: ChartVersion
   values:
-    server:
-      extraArgs:
-        - --insecure
+    # server:
+    #   extraArgs:
+    #     - --insecure
     configs:
-      cm:
+      params:
         server.insecure: "true"

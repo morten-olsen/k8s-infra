@@ -1,0 +1,12 @@
+apiVersion: homelab.mortenolsen.pro/v1
+kind: AuthentikConnection
+metadata:
+  name: authentik
+spec:
+  name:
+    value: http://authentik-server
+  url:
+    value: https://authentik.{{ .Values.domain }}
+  token:
+    secretRef: authentik-secret-key
+    key: AUTHENTIK_BOOTSTRAP_TOKEN

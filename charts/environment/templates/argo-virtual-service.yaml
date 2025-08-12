@@ -16,6 +16,6 @@ spec:
             exact: ""
       route:
         - destination:
-            host: argocd-argo-server.argocd.svc.cluster.local
+            host: "argocd-argo-server.argocd.svc.cluster.local"
             port:
               number: 80

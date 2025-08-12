@@ -3,7 +3,7 @@ kind: DestinationRule
 metadata:
   name: argo
 spec:
-  host: argocd-argo-server.{{ .Release.Namespace }}.svc.cluster.local
+  host: "argocd-argo-server.argocd.svc.cluster.local"
   trafficPolicy:
     tls:
       mode: SIMPLE

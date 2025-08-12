@@ -1,4 +1,6 @@
 domain: dev.olsen.cloud
+storage:
+  path: /data/volumes
 homelab:
   namespace: homelab
 clusterIssuer:
